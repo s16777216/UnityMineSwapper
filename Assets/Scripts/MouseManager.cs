@@ -31,6 +31,7 @@ public class MouseManager : MonoBehaviour
         var keyCode = OnMouseClick();
         if (keyCode == KeyCode.None) return;
 
+        
         switch (keyCode)
         {
             case KeyCode.Mouse0:

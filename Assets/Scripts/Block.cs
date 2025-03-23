@@ -26,6 +26,7 @@ public class Block : MonoBehaviour, IClickable
 
     public delegate void OnClicked(Block block);
     private OnClicked onClicked;
+    private OnClicked onRightClicked;
 
     private void Awake()
     {
@@ -57,6 +58,7 @@ public class Block : MonoBehaviour, IClickable
 
     public void OnClick()
     {
+        if (IsOpened) return;
         Open();
         onClicked?.Invoke(this);
     }
@@ -65,6 +67,8 @@ public class Block : MonoBehaviour, IClickable
     {
         if (IsOpened) return;
         flag.gameObject.SetActive(!flag.gameObject.activeSelf);
+
+        onRightClicked?.Invoke(this);
     }
 
     public void OnMouseEnter()
@@ -82,6 +86,10 @@ public class Block : MonoBehaviour, IClickable
         onClicked = onClick;
     }
 
+    public void SetOnRightClick(OnClicked onRightClick)
+    {
+        onRightClicked = onRightClick;
+    }
     public virtual void Open()
     {
         if (IsOpened) return;

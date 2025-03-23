@@ -7,21 +7,32 @@ public class HomeSceneManager : MonoBehaviour
     private GameObject mainButtons;
     [SerializeField]
     private GameObject difficultButtons;
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip onClickAudioClip;
+
+    private void Awake()
+    {
+        TryGetComponent(out audioSource);
+    }
 
     public void OnStartButtonClick()
     {
+        audioSource.PlayOneShot(onClickAudioClip);
         mainButtons.SetActive(false);
         difficultButtons.SetActive(true);
     }
 
     public void OnBackClick()
     {
+        audioSource.PlayOneShot(onClickAudioClip);
         mainButtons.SetActive(true);
         difficultButtons.SetActive(false);
     }
 
     public void StartGame(int width, int height, float scale,int mineCount)
     {
+        audioSource.PlayOneShot(onClickAudioClip);
         GameSceneParameter.SetParameter(width, height, scale, mineCount);
         SceneManager.LoadScene("GameScene");
     }

@@ -40,7 +40,7 @@ public class BlockGenerator : MonoBehaviour
         this.mineCount = mineCount;
     }
 
-    public List<Block> GenerateEmptyBlocks(Block.OnClicked onBlockClick)
+    public List<Block> GenerateEmptyBlocks(Block.OnClicked onBlockClick, Block.OnClicked onRightClick)
     {
         var tempBlocks = new List<Block>(size);
         for (int i = 0; i < size; i++)
@@ -51,6 +51,7 @@ public class BlockGenerator : MonoBehaviour
             block.index = i;
             block.SetPosition(new Vector2(x, y));
             block.SetOnClick(onBlockClick);
+            block.SetOnRightClick(onRightClick);
             blockTilemap.SetTile(new Vector3Int(x, y, 0), block.tile);
 
             tempBlocks.Add(block);
@@ -59,7 +60,10 @@ public class BlockGenerator : MonoBehaviour
     }
 
     public List<Block> GenerateBlocks(
-        (int, int) clickPosition, Block.OnClicked onBlockClick, Block.OnClicked onMineClick
+        (int, int) clickPosition, 
+        Block.OnClicked onBlockClick, 
+        Block.OnClicked onMineClick,
+        Block.OnClicked onRightClick
         )
     {
         var (firstX, firstY) = clickPosition;
@@ -90,6 +94,7 @@ public class BlockGenerator : MonoBehaviour
             var mine = Instantiate(minePrefab, Vector2.zero, Quaternion.identity, blockTilemap.transform);
             mine.gameObject.SetActive(false);
             mine.SetOnClick(onMineClick);
+            mine.SetOnRightClick(onRightClick);
             remainingBlocks.Add(mine);
         }
         for (int i = mineCount; i < remainingSize; i++)
@@ -97,6 +102,7 @@ public class BlockGenerator : MonoBehaviour
             var block = Instantiate(blockPrefab, Vector2.zero, Quaternion.identity, blockTilemap.transform);
             block.gameObject.SetActive(false);
             block.SetOnClick(onBlockClick);
+            block.SetOnRightClick(onRightClick);
             remainingBlocks.Add(block);
         }
 
@@ -120,6 +126,7 @@ public class BlockGenerator : MonoBehaviour
                 var block = Instantiate(blockPrefab, Vector2.zero, Quaternion.identity, blockTilemap.transform);
                 block.gameObject.SetActive(false);
                 block.SetOnClick(onBlockClick);
+                block.SetOnRightClick(onRightClick);
                 blocks.Add(block);
             }
             else
