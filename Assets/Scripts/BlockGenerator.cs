@@ -40,7 +40,7 @@ public class BlockGenerator : MonoBehaviour
         this.mineCount = mineCount;
     }
 
-    public List<Block> GenerateEmptyBlocks(Block.OnClicked onBlockClick, Block.OnClicked onRightClick)
+    public List<Block> GenerateEmptyBlocks(Action<Block> onBlockClick, Action<Block> onRightClick)
     {
         var tempBlocks = new List<Block>(size);
         for (int i = 0; i < size; i++)
@@ -61,9 +61,9 @@ public class BlockGenerator : MonoBehaviour
 
     public List<Block> GenerateBlocks(
         (int, int) clickPosition, 
-        Block.OnClicked onBlockClick, 
-        Block.OnClicked onMineClick,
-        Block.OnClicked onRightClick
+        Action<Block> onBlockClick,
+        Action<Block> onMineClick,
+        Action<Block> onRightClick
         )
     {
         var (firstX, firstY) = clickPosition;

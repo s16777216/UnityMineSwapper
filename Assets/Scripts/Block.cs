@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -24,9 +25,8 @@ public class Block : MonoBehaviour, IClickable
 
     public bool IsOpened { get; protected set; } = false;
 
-    public delegate void OnClicked(Block block);
-    private OnClicked onClicked;
-    private OnClicked onRightClicked;
+    private event Action<Block> OnRightClicked;
+    private event Action<Block> OnClicked;
 
     private void Awake()
     {
@@ -60,7 +60,7 @@ public class Block : MonoBehaviour, IClickable
     {
         if (IsOpened) return;
         Open();
-        onClicked?.Invoke(this);
+        OnClicked?.Invoke(this);
     }
 
     public void OnRightClick()
@@ -68,7 +68,7 @@ public class Block : MonoBehaviour, IClickable
         if (IsOpened) return;
         flag.gameObject.SetActive(!flag.gameObject.activeSelf);
 
-        onRightClicked?.Invoke(this);
+        OnRightClicked?.Invoke(this);
     }
 
     public void OnMouseEnter()
@@ -81,14 +81,14 @@ public class Block : MonoBehaviour, IClickable
         cursor.gameObject.SetActive(false);
     }
 
-    public void SetOnClick(OnClicked onClick)
+    public void SetOnClick(Action<Block> onClick)
     {
-        onClicked = onClick;
+        OnClicked = onClick;
     }
 
-    public void SetOnRightClick(OnClicked onRightClick)
+    public void SetOnRightClick(Action<Block> onRightClick)
     {
-        onRightClicked = onRightClick;
+        OnRightClicked = onRightClick;
     }
     public virtual void Open()
     {
